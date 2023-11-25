@@ -1,6 +1,6 @@
 from math import log
-import re
 from urllib import request
+from webbrowser import get
 
 from django.shortcuts import render, redirect
 from django.urls import is_valid_path
@@ -10,12 +10,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 from dotenv import load_dotenv
 import os
-
-def u_creds():
-    load_dotenv()
-    username = os.getenv('SECRET_USER')
-    password = os.getenv('SECRET_PASS')
-    
+from django.http import HttpResponse
+ 
 
 def index(request):
     posts = BlogPost.objects.all()  # Fetch all blog posts from the database
@@ -24,16 +20,25 @@ def index(request):
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST[u_creds.username]
-        password = request.POST[u_creds.password]
-
-        user = authenticate(request, username=username, password=password)
+        #load_dotenv()
+        #u_ser = os.getenv("SECRET_USER")
+        #p_word = os.getenv("SECRET_PASS")
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        #print(u_ser,p_word)
+        #print(username, password)
+        #print("before")
+        user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('dashboard')
+            #print('after')
+            return redirect('index')  # Redirect to the dashboard page upon successful login
+            #return HttpResponse("Authentication successful")
         else:
-            return render(request, 'login.html', {'error': 'Invalid credentials'})
-        
+            # Provide an error message for incorrect credentials
+            error_message = "Invalid username or password. Please try again."
+            return render(request, 'login.html', {'error': error_message})
+            #return HttpResponse("Authentication failed")
     return render(request, 'login.html')
 
 
@@ -47,7 +52,7 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            return redirect('dashboard')
+            return redirect('login')
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, 'change_password.html', {'form': form})
