@@ -1,0 +1,32 @@
+<!-- post_create_update.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create/Update Post</title>
+    <!-- TinyMCE CDN -->
+    <script src="https://cdn.tiny.cloud/1/0e6ev76agipqp04xo1464nzwkeriiihyxrlb0lg2frfsg372/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#id_content',
+            plugins: 'advlist autolink lists link image charmap print preview anchor',
+            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | link image',
+            menubar: 'file edit view insert format tools table help',
+            autosave_ask_before_unload: false,
+            height: 400,
+            image_advtab: true,
+            imagetools_toolbar: 'rotateleft rotateright | flipv fliph | editimage imageoptions',
+            content_css: '//www.tiny.cloud/css/codepen.min.css' // Replace with your custom CSS if needed
+        });
+    </script>
+</head>
+<body>
+    <h1>Create/Update Post</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <textarea id="id_content" name="content"></textarea> <!-- Ensure the ID matches the selector -->
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
