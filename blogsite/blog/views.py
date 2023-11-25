@@ -9,8 +9,21 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.forms import PasswordChangeForm
 
 from dotenv import load_dotenv
-import os
+#import os
 from django.http import HttpResponse
+
+from .models import BlogPost
+from django.forms import ModelForm
+
+class BlogPostForm(ModelForm):
+    class Meta:
+        model = BlogPost
+        fields = ['title', 'content']
+
+
+def post_create_update(request):
+    form = BlogPostForm()
+    return render(request, 'post_create_update.html', {'form': form})
  
 
 def index(request):
