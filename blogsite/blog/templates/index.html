@@ -1,13 +1,19 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Blog</title>
-    </head>
-    <body>
-        <h1>Welcome Labonnos' Blog</h1>
-        {% for post in posts %}
-            <h2>{{ post.title }}</h2>
-            <p2>{{ post.conten}}</p2>
-        {% endfor %}
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Title</title>
+    <!-- Other head content -->
+    <script src="https://cdn.tiny.cloud/1/API_KEY/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+    <!-- Your content -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <!-- Other body content -->
+</body>
 </html>
